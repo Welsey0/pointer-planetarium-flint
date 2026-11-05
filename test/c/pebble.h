@@ -14,6 +14,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#ifndef PBL_DISPLAY_WIDTH
+#if defined(PBL_PLATFORM_FLINT)
+#define PBL_DISPLAY_WIDTH 144
+#define PBL_DISPLAY_HEIGHT 168
+#else
+#define PBL_DISPLAY_WIDTH 200
+#define PBL_DISPLAY_HEIGHT 228
+#endif
+#endif
 #ifdef _TIME_H_
 // As the SDK builds (-D_TIME_H_ -Dtime_t=long): newlib's time.h is skipped
 // and pebble.h declares what's used.

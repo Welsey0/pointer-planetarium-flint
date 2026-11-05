@@ -12,7 +12,7 @@
     "sdkVersion": "3",
     "enableMultiJS": true,
     "capabilities": ["configurable", "location"],
-    "targetPlatforms": ["emery"],
+    "targetPlatforms": ["emery", "flint"],
     "watchapp": {
       "watchface": false
     },
@@ -96,6 +96,70 @@
           "name": "MOON",
           "file": "images/moon.png",
           "memoryFormat": "SmallestPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_MERCURY_FLINT",
+          "file": "images/planet_mercury_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_VENUS_FLINT",
+          "file": "images/planet_venus_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_MARS_FLINT",
+          "file": "images/planet_mars_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_JUPITER_FLINT",
+          "file": "images/planet_jupiter_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_SATURN_FLINT",
+          "file": "images/planet_saturn_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_URANUS_FLINT",
+          "file": "images/planet_uranus_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "PLANET_NEPTUNE_FLINT",
+          "file": "images/planet_neptune_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
+          "storageFormat": "pbi"
+        },
+        {
+          "type": "bitmap",
+          "name": "MOON_FLINT",
+          "file": "images/moon_flint.png",
+          "targetPlatforms": ["flint"],
+          "memoryFormat": "1BitPalette",
           "storageFormat": "pbi"
         }
       ]

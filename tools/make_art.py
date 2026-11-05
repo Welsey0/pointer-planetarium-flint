@@ -23,6 +23,9 @@ output differs between versions).
 The review sheet has a row per picture: the photo shrunk without
 dithering, then as the watch shows it in the Night, Day and Stargazer
 themes, all at twice the watch's size.
+
+Flint variants are separately thresholded/dithered to black and white and
+keep transparent sky pixels, so the Emery resources remain unchanged.
 """
 import base64
 import json
@@ -295,6 +298,18 @@ def build_picture(e):
     return ow, oh, index, palette, px
 
 
+def build_flint_picture(built):
+    """Make a transparent, dithered 1-bit version for Flint."""
+    ow, oh, _, _, px = built
+    want = [[None if p is None else tuple(p) for p in row] for row in px]
+    idx, _ = dither({'colours': ['000000', 'FFFFFF'], 'strength': 1.0}, want, ow, oh)
+    # Dark dither cells are transparent: the picture is drawn over a black
+    # window, leaving only white pixels in the 1-bit resource.
+    palette = [(0, 0, 0, 0), (255, 255, 255, 255)]
+    index = [[0 if i is None or i == 0 else 1 for i in row] for row in idx]
+    return ow, oh, index, palette
+
+
 def build_icon():
     """Saturn, 25 x 25, black on transparent: a ball in a tilted ring, the
     ring's near side in front of the ball with a gap cut round it."""
@@ -444,6 +459,8 @@ def main(argv):
         built.append(b)
         ow, oh, index, palette, _ = b
         emit(e['out'], ow, oh, index=index, palette=palette)
+        fw, fh, findex, fpalette = build_flint_picture(b)
+        emit(e['flint_out'], fw, fh, index=findex, palette=fpalette)
         if not check:
             raw = ow * oh * (2 if len(palette) <= 4 else 4) // 8
             print('%-10s %3d x %3d  %2d colours  %5d bytes on the watch' % (e['name'], ow, oh, len(palette) - 1, raw))

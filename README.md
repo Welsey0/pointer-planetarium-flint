@@ -1,7 +1,7 @@
 # Pointer Planetarium
 
 Point at something in the sky with your finger, and your Pebble Time 2
-tells you what it is.
+or Pebble 2 Duo tells you what it is.
 
 <p>
 <img src="docs/screenshots/home.png" width="200" alt="The home screen">
@@ -35,8 +35,8 @@ It's free and open source, with no ads, no accounts and no tracking.
 
 ## What you need
 
-- A **Pebble Time 2**. (It's made for the Time 2's color touch screen and
-  doesn't run on other Pebbles.)
+- A **Pebble Time 2** (Emery, color touchscreen), or **Pebble 2 Duo**
+  (Flint, black-and-white button-only display).
 - The **Pebble app** on your phone, with location allowed for Pointer
   Planetarium. Your phone does the sky math and downloads satellite and
   plane data, so the phone needs to be nearby. Without it, the watch can
@@ -172,7 +172,9 @@ binoculars.
 
 ## Touch and buttons
 
-Everything works by touch as well as with the buttons.
+On Emery everything works by touch as well as with the buttons. Flint is
+fully usable with UP, DOWN, SELECT (including hold) and BACK; it has no
+touchscreen and uses a compact monochrome layout.
 
 | Screen | Drag up / down | Drag left / right | Tap |
 |---|---|---|---|
@@ -357,9 +359,18 @@ then `pebble sdk install latest`) and Node.js.
 
 ```
 pebble build
+python3 tools/size_report.py build/*.pbw
 for t in test/*.test.js; do node $t; done
 sh tools/check_c.sh
 ```
+
+`pebble build` produces both the Emery and Flint binaries. Emery keeps the
+color touch UI and resources; Flint uses a 144×168 monochrome, button-only
+layout and separately dithered black-and-white planet and Moon resources.
+Compass, accelerometer, persistence, vibration, AppMessage and Find It are
+shared. Physical Flint testing is still needed for compass calibration,
+pointing orientation, Bluetooth/AppMessage behavior, battery use and sensor
+accuracy; QEMU does not validate those sensors.
 
 - `src/c/` is the watch: screens, buttons, touch, and the aim itself.
   `sky.c` is the sky math in C; `offline.c` answers without the phone.

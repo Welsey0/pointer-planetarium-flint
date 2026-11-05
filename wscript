@@ -35,7 +35,7 @@ def build(ctx):
         # -u it's thrown away and the watch won't install the app.
         ctx.env.append_value('CFLAGS', '-flto')
         ctx.env.append_value('LINKFLAGS', ['-flto', '-Wl,-u,__pbl_app_info'])
-        app_elf = '{}/pebble-app.elf'.format(ctx.env.BUILD_DIR)
+        app_elf = '{}/pebble-app-{}.elf'.format(ctx.env.BUILD_DIR, platform)
         ctx.pbl_build(source=ctx.path.ant_glob('src/c/**/*.c'), target=app_elf, bin_type='app')
         binaries.append({'platform': platform, 'app_elf': app_elf})
     ctx.env = cached_env

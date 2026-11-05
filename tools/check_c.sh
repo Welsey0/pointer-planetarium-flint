@@ -34,8 +34,14 @@ have_arm=$(command -v arm-none-eabi-gcc || true)
 # The release build, in full, warnings shown.
 for f in src/c/*.c; do
   gcc $flags -c "$f" -o "$out/host.o"
+  gcc $flags -DPBL_PLATFORM_FLINT -c "$f" -o "$out/flint.o"
+  if nm -u "$out/flint.o" | grep -Eq 'touch_service_|window_set_touch_bridge_disabled'; then
+    echo "Flint object references touchscreen APIs" >&2
+    exit 1
+  fi
   if [ -n "$have_arm" ]; then
     arm-none-eabi-gcc $flags $arm -c "$f" -o "$out/$(basename "$f" .c).o"
+    arm-none-eabi-gcc $flags $arm -DPBL_PLATFORM_FLINT -c "$f" -o "$out/flint-$(basename "$f" .c).o"
   fi
 done
 # Every screenshot build, with the computer's compiler at -Os (so warnings
@@ -46,6 +52,10 @@ for shot in 1 2 3 4 5 6 7 9 10 11 12 13 14 15 16 17 18 22 23 24 25 26 27 28 29 3
 done
 # ... and one with touch put back in (SKY_TOUCH).
 gcc $flags -DSKY_SHOT=72 -DSKY_TOUCH -c src/c/main.c -o "$out/shot.o" 2> "$out/err" || { cat "$out/err"; exit 1; }
+# Flint has no touchscreen API; its screenshot seed must still compile with
+# the platform branch and the normal button-only lifecycle.
+gcc $flags -DPBL_PLATFORM_FLINT -DSKY_SHOT=72 -c src/c/main.c -o "$out/flint-shot.o" 2> "$out/err" ||
+  { cat "$out/err"; exit 1; }
 echo "watch code type-checks"
 if [ -n "$have_arm" ]; then
   arm-none-eabi-size "$out"/main.o "$out"/sky.o "$out"/offline.o
